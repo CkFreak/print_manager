@@ -1,0 +1,24 @@
+{
+  "name": "frontend",
+  "version": "1.0.0",
+  "description": "A Frontend to display and manipulate printing costs and fees",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CkFreak/print_manager.git"
+  },
+  "keywords": [
+    "react",
+    "javascript",
+    "webapp"
+  ],
+  "author": "Timbo Blaesche",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/CkFreak/print_manager/issues"
+  },
+  "homepage": "https://github.com/CkFreak/print_manager#readme"
+}
