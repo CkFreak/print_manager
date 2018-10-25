@@ -1,5 +1,6 @@
 import * as Imap from "imap";
 import { CH_DRUCK_PW } from "../../config/constants";
+const mimelib = require("mimelib");
 
 export const ImapService = (() => {
     const imap: Imap = new Imap({
@@ -20,7 +21,8 @@ export const ImapService = (() => {
             if (Array.isArray(struct[i])) {
                 findAttachmentParts(struct[i], attachments);
             } else {
-                if (struct[i].disposition && ['INLINE', 'attachment'].indexOf(struct[i].disposition.type) > -1) {
+                console.log(struct[i]);
+                if (struct[i].disposition && ['INLINE', 'ATTACHMENT', 'attachment', 'inline'].indexOf(struct[i].disposition.type) > -1) {
                     attachments.push(struct[i]);
                 }
             }
@@ -29,6 +31,7 @@ export const ImapService = (() => {
     };
 
     const startService = () => {
+        let content = "";
         imap.once("ready", () => {
             openInbox((err: Error, box: any) => {
                 if (err) console.log(err);
@@ -52,10 +55,12 @@ export const ImapService = (() => {
                                 msg.on("body", (stream: any, info: any) => {
                                     stream.on("data", (chunk: any) => {
                                         console.log(`Gotten some data: ${chunk}`);
+                                        content += chunk;
                                     });
                                     stream.on("end", () => {
-                                        console.log("Gotten all data");
-                                    })
+                                        content = mimelib.decodeQuotedPrintable(content);
+                                        console.log(content);
+                                    });
                                 });
                             });
                         }
