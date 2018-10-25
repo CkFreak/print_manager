@@ -28,6 +28,7 @@
     "cors": "^2.8.4",
     "express": "^4.16.4",
     "imap": "^0.8.19",
+    "mimelib": "^0.3.1",
     "mongoose": "^5.3.6",
     "nodemon": "^1.18.4",
     "typescript": "^3.1.3"
