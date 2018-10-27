@@ -9,9 +9,9 @@ export const LoginStatusMiddleware = () => {
 
     const isTokenValid = (req: Request, res: Response, next: Function) => {
         const token = req.get("jwt");
-        jwt.verifyAsync(token, LOGIN_SECRET).then((decoded: string) => {
+        jwt.verifyAsync(token, LOGIN_SECRET).then((decoded: any) => {
             if (decoded) {
-                console.log(decoded);
+                console.log(`New Request from ${decoded.name}`);
                 next();
             }
         }).catch((err: Error) => {
