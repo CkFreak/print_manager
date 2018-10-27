@@ -7,7 +7,7 @@ export const TokenService =  () => {
     const jwt: any = bluebird.promisifyAll(jsonwebtoken);
 
     const signLoginToken = (name: string) => {
-        jwt.signAsync({name}, LOGIN_SECRET, {expiresIn: "1h"}).then((token: string) => {
+        return jwt.signAsync({name}, LOGIN_SECRET, {expiresIn: "1h"}).then((token: string) => {
             if (token) return token;
         }).catch((err: Error): any => {
             console.error(err);
