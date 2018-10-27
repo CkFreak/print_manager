@@ -1,5 +1,6 @@
 import * as express from "express";
 import * as cors from "cors";
+import * as bodyParser from "body-parser";
 import { Server } from "http";
 import { MongoServiceT } from "./types/services/mongo_service";
 import { UserController } from "./controller/UserController";
@@ -11,13 +12,17 @@ export const App = (mongo: MongoServiceT) => {
     const loginMiddleware = LoginStatusMiddleware();
     const userController = UserController(mongo);
 
+    app.use(bodyParser.urlencoded({extended: true}));
+    app.use(bodyParser.json());
     app.use(cors());
+
+    app.post("/register", userController.registerUser);
+
     app.use(loginMiddleware.isTokenValid);
 
-    app.use("/register", userController.registerUser);
-    app.use("/login", userController.loginUser);
+    app.post("/login", userController.loginUser);
 
-    app.use("*", (req: express.Request, res: express.Response) => {
+    app.all("*", (req: express.Request, res: express.Response) => {
         console.log("Route could not be found %s", req.url);
         res.status(404).send({message: "Not Found!"});
     });
