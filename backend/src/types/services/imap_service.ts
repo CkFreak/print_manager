@@ -30,7 +30,7 @@ export const ImapService = (() => {
         return attachments;
     };
 
-    const fetchAttachments = () => {
+    const fetchAttachments = (callback: Function) => {
         let content = "";
         imap.once("ready", () => {
             openInbox((err: Error, box: any) => {
@@ -62,7 +62,7 @@ export const ImapService = (() => {
                                         csv().fromString(content).then((data) => {
                                             // @ts-ignore
                                             content = data;
-                                            console.log(content)
+                                            return callback(content);
                                         });
                                     });
                                 });
@@ -73,16 +73,15 @@ export const ImapService = (() => {
                         console.log("Finished email");
                     });
                 });
-                fetched.once('error', function (err) {
+                fetched.once('error', (err) => {
                     console.log('Fetch error: ' + err);
                 });
-                fetched.once('end', function () {
+                fetched.once('end', () => {
                     console.log('Done fetching all messages!');
                     imap.end();
                 });
             });
         });
-        return content;
     };
 
     imap.once('error', function (err: Error) {
