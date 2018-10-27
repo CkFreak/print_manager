@@ -1,5 +1,6 @@
 import * as Imap from "imap";
 import { CH_DRUCK_PW } from "../../config/constants";
+import * as csv from "csvtojson";
 const mimelib = require("mimelib");
 
 export const ImapService = (() => {
@@ -21,7 +22,6 @@ export const ImapService = (() => {
             if (Array.isArray(struct[i])) {
                 findAttachmentParts(struct[i], attachments);
             } else {
-                console.log(struct[i]);
                 if (struct[i].disposition && ['INLINE', 'ATTACHMENT', 'attachment', 'inline'].indexOf(struct[i].disposition.type) > -1) {
                     attachments.push(struct[i]);
                 }
@@ -30,7 +30,7 @@ export const ImapService = (() => {
         return attachments;
     };
 
-    const startService = () => {
+    const fetchAttachments = () => {
         let content = "";
         imap.once("ready", () => {
             openInbox((err: Error, box: any) => {
@@ -54,12 +54,16 @@ export const ImapService = (() => {
                             att.on("message", (msg: any, seqno: any) => {
                                 msg.on("body", (stream: any, info: any) => {
                                     stream.on("data", (chunk: any) => {
-                                        console.log(`Gotten some data: ${chunk}`);
                                         content += chunk;
                                     });
                                     stream.on("end", () => {
                                         content = mimelib.decodeQuotedPrintable(content);
-                                        console.log(content);
+                                        content = content.replace(/;/g, ",");
+                                        csv().fromString(content).then((data) => {
+                                            // @ts-ignore
+                                            content = data;
+                                            console.log(content)
+                                        });
                                     });
                                 });
                             });
@@ -78,6 +82,7 @@ export const ImapService = (() => {
                 });
             });
         });
+        return content;
     };
 
     imap.once('error', function (err: Error) {
@@ -91,6 +96,6 @@ export const ImapService = (() => {
     imap.connect();
 
     return {
-        startService,
+        fetchAttachments,
     }
 })();
