@@ -42,7 +42,7 @@ export const UserController = (mongo: MongoServiceT) => {
             }
             sent = true;
             return res.status(404).send({message: "User or password incorrect"});
-        }).then((token: any) => {
+        }).then((token: string) => {
             if (token) {
                 return res.status(200).send({message: "Success", data: token});
             } else if (!sent) {
