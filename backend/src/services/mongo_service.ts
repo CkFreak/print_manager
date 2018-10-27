@@ -6,7 +6,7 @@ import { UserModel } from "../models/UserModel";
 export const MongoService = (() => {
 
     const registerUser = (name: string, password: string): Promise<any> => {
-        return UserModel.update({name: name},
+        return UserModel.updateOne({name: name},
             {name: name, password: password},
             {upsert: true})
             .exec();
