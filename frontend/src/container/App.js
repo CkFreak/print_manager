@@ -1,17 +1,18 @@
 import React, { Component } from 'react';
-import './App.css';
+import '../App.css';
+import { Navbar } from "../components/Navbar";
 
 class App extends Component {
   render() {
     return (
-      <div className="App">
-        <header className="App-header">
-            Christophorus Print Manager
-        </header>
-          <div className={"container-fluid"}>
+        <div className="App">
+            <Navbar>
+                Christophorus Print Manager
+            </Navbar>
+            <div className={"container-fluid"}>
 
-          </div>
-      </div>
+            </div>
+        </div>
     );
   }
 }
