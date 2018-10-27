@@ -19,7 +19,7 @@ export const UserController = (mongo: MongoServiceT) => {
         bcrypt.hashAsync(req.body.password, SALT_ROUNDS).then((hash: string) => {
             return mongo.registerUser(req.body.name, hash);
         }).then(() => {
-            console.log(`User ${req.body.user} was successfully registered!`);
+            console.log(`User ${req.body.name} was successfully registered!`);
             res.status(200).send({message: "Success"});
         }).catch((err: Error) => {
             console.error(err);
