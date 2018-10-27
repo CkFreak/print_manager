@@ -9,7 +9,7 @@ const start = async () => {
     MongoService.init().then((mongo) => {
         clientUpdateService = ClientUpdateService(mongo);
         clientUpdateService.updateDatabase();
-        console.info("Scheduling Email Job for 12:02 on every 25th of the year");
+        console.info("Scheduling Email Job for 12:02 on every 25th of the month.");
         schedule.scheduleJob("* 2 12 25 * *", clientUpdateService.updateDatabase);
         const app = App(mongo);
         app.listen(PORT);
