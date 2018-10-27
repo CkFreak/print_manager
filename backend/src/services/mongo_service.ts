@@ -20,11 +20,11 @@ export const MongoService = (() => {
     const updateClientFromEmail = (name: string, totalJobs: number, totalPages: number): Promise<any> => {
         return ClientModel.updateOne({name: name}, {
             "$inc": {
-                totalJobs: totalJobs,
-                totalPages: totalPages,
+                jobsTotal: totalJobs,
+                pagesTotal: totalPages,
                 duePages: totalPages,
             }
-        }).exec();
+        }, {upsert: true}).exec();
     };
 
     const markPaymentForClient = (name: string): Promise<any> => {
