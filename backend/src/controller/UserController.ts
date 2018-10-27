@@ -35,13 +35,18 @@ export const UserController = (mongo: MongoServiceT) => {
             return;
         }
         mongo.getUserByName(req.body.name).then((user: any) => {
-            return bcrypt.compareAsync(req.body.password, user.password);
+            if (user) {
+                return bcrypt.compareAsync(req.body.password, user.password);
+            }
+            console.info("No User found with name", req.body.name);
+            sent = true;
+            return res.status(404).send({message: "Username or password incorrect"});
         }).then((result: boolean) => {
             if (result) {
                 return tokenService.signLoginToken(req.body.name);
             }
+            if (!sent) res.status(404).send({message: "User or password incorrect"});
             sent = true;
-            return res.status(404).send({message: "User or password incorrect"});
         }).then((token: string) => {
             if (token) {
                 return res.status(200).send({message: "Success", data: token});
@@ -51,7 +56,7 @@ export const UserController = (mongo: MongoServiceT) => {
             }
         }).catch((err: Error) => {
             console.error(err);
-            res.status(500).send({message: "Internal Server Error"});
+            if (!sent) res.status(500).send({message: "Internal Server Error"});
         });
     };
 
