@@ -1,5 +1,5 @@
 import * as Imap from "imap";
-import { CH_DRUCK_PW } from "../../config/constants";
+import { CH_DRUCK_PW } from "../config/constants";
 import * as csv from "csvtojson";
 const mimelib = require("mimelib");
 
@@ -45,7 +45,6 @@ export const ImapService = (() => {
                         const attachments: any[] = findAttachmentParts(attributes.struct, undefined);
                         console.log(`Found ${attachments.length} attachments.`);
                         for (let i = 0; i < attachments.length; ++i) {
-                            console.log(`Fetching attachment ${attachments[i].params.name}`);
                             const att: any = imap.fetch(attributes.uid, {
                                 bodies: [attachments[i].partID],
                                 struct: true,
@@ -65,6 +64,9 @@ export const ImapService = (() => {
                                             return callback(content);
                                         });
                                     });
+                                });
+                                imap.seq.setFlags(seqno, "\\Deleted", (err: Error) => {
+                                    console.error(err);
                                 });
                             });
                         }

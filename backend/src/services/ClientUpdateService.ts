@@ -1,5 +1,5 @@
 import { MongoServiceT } from "../types/services/mongo_service";
-import { ImapService } from "../types/services/imap_service";
+import { ImapService } from "./imap_service";
 
 export const ClientUpdateService = (mongo: MongoServiceT) => {
 
