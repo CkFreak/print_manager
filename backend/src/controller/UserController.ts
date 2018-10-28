@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { MongoServiceT } from "../types/services/mongo_service";
 import * as bluebird from "bluebird";
-import * as Bcrypt from "bcrypt";
+import * as Bcrypt from "bcryptjs";
 import { TokenService } from "../services/TokenService";
 
 export const UserController = (mongo: MongoServiceT) => {
