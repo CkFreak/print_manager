@@ -17,7 +17,14 @@ export const ClientController = (mongo: MongoServiceT) => {
         });
     };
 
+    const retrieveClients = (req: Request, res: Response) => {
+        mongo.retrieveClients().then((clients: any) => {
+            res.status(200).send({message: "Success", data: clients});
+        });
+    };
+
     return {
         markPayment,
+        retrieveClients,
     }
 };
