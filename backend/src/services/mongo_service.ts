@@ -33,11 +33,16 @@ export const MongoService = (() => {
         }).exec();
     };
 
+    const retrieveClients = (): Promise<any> => {
+        return ClientModel.find({}, {__v: 0, _id: 0}).exec();
+    };
+
     const mongo: MongoServiceT = {
         registerUser,
         getUserByName,
         updateClientFromEmail,
         markPaymentForClient,
+        retrieveClients,
     };
 
     const init = () => {

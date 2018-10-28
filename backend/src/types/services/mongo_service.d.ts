@@ -3,4 +3,5 @@ export interface MongoServiceT {
     getUserByName(name: string): Promise<any>;
     updateClientFromEmail(name: string, totalJobs: number, totalPages: number): Promise<any>;
     markPaymentForClient(name: string): Promise<any>;
+    retrieveClients(): Promise<any>;
 }
