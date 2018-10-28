@@ -23,7 +23,8 @@ export const App = (mongo: MongoServiceT) => {
 
     app.use(loginMiddleware.isTokenValid);
 
-    app.post("/pay", clientController.markPayment);
+    app.get("/client", clientController.retrieveClients);
+    app.put("/pay", clientController.markPayment);
 
     app.all("*", (req: express.Request, res: express.Response) => {
         console.log("Route could not be found %s", req.url);
