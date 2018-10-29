@@ -129,6 +129,7 @@ backend/!tests/cases/user/zone.js/
 backend/!tests/cases/user/bignumber.js/
 backend/!tests/cases/user/discord.js/
 backend/tests/baselines/reference/dt
+backend/.env
 # Jetbrains
 backend/.idea
 .idea/
