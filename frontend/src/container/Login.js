@@ -31,7 +31,11 @@ export default class Login extends Component {
             this.setState({username: "", password: ""});
             this.props.history.push("/dashboard");
         }).catch((err) => {
-            console.log(err);
+            if (err.response) {
+                // non 200 response
+                console.log(err.response.status);
+                this.setState({loading: false});
+            }
         });
     }
 
