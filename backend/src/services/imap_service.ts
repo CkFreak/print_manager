@@ -1,7 +1,7 @@
 import * as Imap from "imap";
 import { CH_DRUCK_PW } from "../config/constants";
 import * as csv from "csvtojson";
-const mimelib = require("mimelib");
+import { isBuffer } from "util";
 
 export const ImapService = (() => {
     const imap: Imap = new Imap({
@@ -31,7 +31,7 @@ export const ImapService = (() => {
     };
 
     const fetchAttachments = (callback: Function) => {
-        let content = "";
+        let content: any = "";
         imap.once("ready", () => {
             openInbox((err: Error, box: any) => {
                 if (err) console.log(err);
@@ -53,13 +53,12 @@ export const ImapService = (() => {
                             att.on("message", (msg: any, seqno: any) => {
                                 msg.on("body", (stream: any, info: any) => {
                                     stream.on("data", (chunk: any) => {
-                                        content += chunk;
+                                        content += chunk.toString();
                                     });
                                     stream.on("end", () => {
-                                        content = mimelib.decodeQuotedPrintable(content);
+                                        content = Buffer.from(content, "base64").toString();
                                         content = content.replace(/;/g, ",");
                                         csv().fromString(content).then((data) => {
-                                            // @ts-ignore
                                             content = data;
                                             return callback(content);
                                         });
