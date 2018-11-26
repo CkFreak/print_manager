@@ -2,7 +2,7 @@ import { MongoService } from "./services/mongo_service";
 import * as mongoose from "mongoose";
 import { App } from "./app";
 import { ClientUpdateService } from "./services/ClientUpdateService";
-import * as schedule from "node-schedule";
+import * as cron from "cron";
 import { PORT } from "./config/constants";
 
 let app: any = {};
@@ -12,8 +12,8 @@ const start = async () => {
     MongoService.init().then((mongo) => {
         clientUpdateService = ClientUpdateService(mongo);
         clientUpdateService.updateDatabase();
-        console.info("Scheduling Email Job for 12:02 on every 25th of the month.");
-        schedule.scheduleJob("* 2 12 25 * *", clientUpdateService.updateDatabase);
+        console.info("Scheduling Email Job for 13:02 on every 25th of the month.");
+        new cron.CronJob("* 2 13 25 * *", clientUpdateService.updateDatabase, null, true, "CET");
         app = App(mongo);
         app.listen(PORT);
     });
